@@ -29,9 +29,9 @@ function getFormData() {
         diff_qse: getC('diff_qse'), diff_cie: getC('diff_cie'), diff_aeroport: getC('diff_aeroport'),
         sig_encadre_nom: getV('sig_encadre_nom'), sig_encadre_box: getT('sig_encadre_box'),
         analyse_qse_text: getV('analyse_qse_text'),
-        cl_ev: getC('cl_ev'), cl_inc: getC('cl_inc'), cl_inc_g: false, cl_acc: false,
-        st_clos_s: getC('st_clos_s'), st_ouvert: getC('st_ouvert'), st_clos_d: false,
-        dsac: false, bea: false, nav_air: false, autre: false,
+        cl_ev: getC('cl_ev'), cl_inc: getC('cl_inc'), cl_inc_g: getC('cl_inc_g'), cl_acc: getC('cl_acc'),
+        st_clos_s: getC('st_clos_s'), st_ouvert: getC('st_ouvert'), st_clos_d: getC('st_clos_d'),
+        dsac: getC('dsac'), bea: getC('bea'), nav_air: getC('nav_air'), autre: getC('autre'),
         sig_qse_nom: getV('sig_qse_nom'), sig_qse_box: getT('sig_qse_box')
     };
 }
@@ -42,7 +42,8 @@ async function genererPDF() {
     showAlert("Génération du PDF...");
     try {
         const res = await fetch('/submit?action=pdf', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
         if (res.ok) {
@@ -52,27 +53,25 @@ async function genererPDF() {
             a.href = url;
             a.download = `CRE_${data.escale || 'DOC'}.pdf`;
             a.click();
-            showAlert("✅ Terminé !");
-        }
-    } catch (e) { showAlert("❌ Erreur serveur"); }
+            showAlert("✅ PDF généré !");
+        } else { showAlert("❌ Erreur serveur"); }
+    } catch (e) { showAlert("❌ Connexion impossible au serveur"); }
 }
 
 async function envoyerEmail() {
     calculerScore();
     const data = getFormData();
-    showAlert("📤 Envoi silencieux via SendGrid...");
-
+    showAlert("📤 Envoi direct au Bureau SGS...");
     try {
         const response = await fetch('/submit?action=email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-
         if (response.ok) {
-            showAlert("✅ Email envoyé avec succès");
+            showAlert("✅ Email envoyé avec succès !");
         } else {
-            showAlert("❌ Erreur lors de l'envoi SendGrid.");
+            showAlert("❌ Erreur lors de l'envoi.");
         }
     } catch (error) {
         showAlert("❌ Impossible de joindre le serveur.");
