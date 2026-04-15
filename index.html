@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>QSE-FO-185 V01 - Compte Rendu d'Évènement</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="custom-alert" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:10px; text-align:center; min-width:300px;">
+            <p id="alert-message"></p>
+            <button onclick="closeAlert()" style="padding:10px 20px; background:#f39200; color:white; border:none; border-radius:5px; cursor:pointer;">OK</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <section class="pdf-page">
+            <div class="header-main">
+                <div class="logo-box">
+                    <img src="G3S.png" alt="alyzia">
+                </div>
+                <div class="title-box">
+                    <div class="type-doc">FORMULAIRE</div>
+                    <div class="nom-doc">COMPTE RENDU D'ÉVÈNEMENT</div>
+                </div>
+            </div>
+
+            <table class="grid-layout">
+                <tr>
+                    <td class="cell-label-orange">Date C/R</td>
+                    <td class="cell-input"><input type="date" id="date_cr"></td>
+                    <td class="cell-label-orange">Entité</td>
+                    <td class="cell-input"><input type="text" id="entite" class="uppercase-bold-center"></td>
+                    <td class="cell-label-orange">Escale</td>
+                    <td class="cell-input"><input type="text" id="escale" class="uppercase-bold-center"></td>
+                </tr>
+            </table>
+
+            <table class="impact-grid-v2">
+                <tr>
+                    <td class="cell-label-orange">Retard</td>
+                    <td class="cell-check"><input type="checkbox" id="retard"></td>
+                    <td class="cell-spacer"></td>
+                    <td class="cell-label-orange">Réclamation compagnie</td>
+                    <td class="cell-check"><input type="checkbox" id="reclam_cie"></td>
+                </tr>
+                <tr>
+                    <td class="cell-label-orange">Impact sécurité</td>
+                    <td class="cell-check"><input type="checkbox" id="impact_secu"></td>
+                    <td class="cell-spacer"></td>
+                    <td class="cell-label-orange">Dysfonctionnement</td>
+                    <td class="cell-check"><input type="checkbox" id="dysfonc"></td>
+                </tr>
+            </table>
+
+            <table class="flight-data-main">
+                <thead>
+                    <tr class="flight-headers">
+                        <td style="width: 22%;">Compagnie N° Vol</td>
+                        <td style="width: 15%;">Immat</td>
+                        <td style="width: 15%;">Date</td>
+                        <td style="width: 23%;">Heure locale Lieu</td>
+                        <td style="width: 12%;">Jour / Nuit</td>
+                        <td>Météo</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="flight-inputs">
+                        <td>
+                            <div style="display:flex;"><input type="text" id="compagnie" placeholder="Cie" style="width:50%; border-right:1px solid #ccc;"><input type="text" id="num_vol" placeholder="N°" style="width:50%;"></div>
+                        </td>
+                        <td><input type="text" id="immat"></td>
+                        <td><input type="date" id="date_evenement"></td>
+                        <td>
+                            <div style="display:flex;"><input type="time" id="heure_locale" style="width:50%; border-right:1px solid #ccc;"><input type="text" id="lieu" placeholder="Lieu" style="width:50%;"></div>
+                        </td>
+                        <td><input type="text" id="jour_nuit"></td>
+                        <td><input type="text" id="meteo"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-block">
+                <div class="block-header-orange">Description succincte</div>
+                <textarea id="desc_succincte" rows="1"></textarea>
+            </div>
+
+            <div class="text-block">
+                <div class="block-header-orange">Description</div>
+                <textarea id="desc_detaillee" class="desc-large"></textarea>
+            </div>
+
+            <table class="sig-table-main">
+                <tr>
+                    <td class="cell-label-orange" style="width: 25%;">Compte-rendu rédigé par :</td>
+                    <td class="sig-val"><input type="text" id="sig_redacteur_nom"></td>
+                    <td class="cell-label-orange" style="width: 15%;">Signature</td>
+                    <td class="sig-val-editable" id="sig_redacteur_box" contenteditable="true"></td>
+                </tr>
+            </table>
+
+            <div class="text-block">
+                <div class="block-header-orange">Réservé encadrement: Analyse sommaire / actions immédiates</div>
+                <textarea id="analyse_encadrement" class="encadre-large"></textarea>
+            </div>
+
+            <div class="diffusion-container-v2">
+                <div class="diff-label-v2">Diffusion</div>
+                <div class="diff-content-v2">
+                    <label><input type="checkbox" id="diff_qse"> QSE</label>
+                    <label><input type="checkbox" id="diff_cie"> Compagnie cliente</label>
+                    <label><input type="checkbox" id="diff_aeroport"> Exploitant aéroport</label>
+                </div>
+            </div>
+
+            <table class="sig-table-main">
+                <tr>
+                    <td class="cell-label-orange" style="width: 25%;">Rédigé par :</td>
+                    <td class="sig-val"><input type="text" id="sig_encadre_nom"></td>
+                    <td class="cell-label-orange" style="width: 15%;">Signature</td>
+                    <td class="sig-val-editable" id="sig_encadre_box" contenteditable="true"></td>
+                </tr>
+            </table>
+
+            <footer class="legal-footer-fixed">
+                <table class="legal-table">
+                    <tr class="validation-row">
+                        <td class="val-text">Rédigé par: Responsable SGS</td><td class="val-ref">XR</td>
+                    </tr>
+                    <tr class="validation-row">
+                        <td class="val-text">Approuvé par: Responsable QSE</td><td class="val-ref">CC/PD/VS</td>
+                    </tr>
+                    <tr class="notice-row">
+                        <td class="legal-notice">
+                            Le présent document est la propriété du Groupe 3S. Il ne peut être reproduit, communiqué, ou confié à des personnes externes, sans l’autorisation du service QSE. 
+                            Les entités intervenant dans le domaine de la sécurité doivent répondre à l’article L612-14 du Code de la Sécurité Intérieure : L'autorisation d'exercice ne confère aucune prérogative de puissance publique à l'entreprise ou aux personnes qui en bénéficient.
+                        </td>
+                        <td class="legal-refs"><strong>OSE-FO-185</strong><br><strong>V01</strong><br>Date: 15/05/2018<br>Page 1 sur 2</td>
+                    </tr>
+                </table>
+            </footer>
+        </section>
+
+        <section class="pdf-page">
+            <div class="header-main">
+                <div class="logo-box"><img src="G3S.png" alt="alyzia"></div>
+                <div class="title-box">
+                    <div class="type-doc">FORMULAIRE</div>
+                    <div class="nom-doc">COMPTE RENDU D'ÉVÈNEMENT</div>
+                </div>
+            </div>
+
+            <div class="block-header-orange">Réservé QSE: Classement et analyse détaillée / mesures prises...</div>
+            
+            <div class="qse-container">
+                <div class="qse-frame-box">
+                    <div class="frame-label-black">Classement</div>
+                    <div class="frame-content">
+                        <label><input type="checkbox" id="cl_ev"> Évènement</label>
+                        <label><input type="checkbox" id="cl_inc"> Incident</label>
+                        <label><input type="checkbox" id="cl_inc_g"> Incident grave</label>
+                        <label><input type="checkbox" id="cl_acc"> Accident</label>
+                    </div>
+                </div>
+                <div class="qse-frame-box">
+                    <div class="frame-label-black">Statut</div>
+                    <div class="frame-content">
+                        <label><input type="checkbox" id="st_clos_s"> Clos après analyse sommaire</label>
+                        <label><input type="checkbox" id="st_ouvert"> Ouvert, analyse en cours</label>
+                        <label><input type="checkbox" id="st_clos_d"> Clos après analyse détaillée</label>
+                    </div>
+                </div>
+            </div>
+
+            <textarea id="analyse_qse_text" class="desc-page2-v3"></textarea>
+
+            <div class="diffusion-container-v2-p2">
+                <div class="diff-label-p2">Diffusion suppl. si impact sécurité</div>
+                <div class="diff-content-v2">
+                    <label><input type="checkbox" id="dsac"> DSAC</label>
+                    <label><input type="checkbox" id="bea"> BEA</label>
+                    <label><input type="checkbox" id="nav_air"> Navigation aérienne</label>
+                    <label><input type="checkbox" id="autre"> Autre :</label>
+                </div>
+            </div>
+
+            <table class="sig-table-main" style="margin-top: 10pt;">
+                <tr>
+                    <td class="cell-label-orange" style="width: 25%;">Rédigé par :</td>
+                    <td class="sig-val"><input type="text" id="sig_qse_nom"></td>
+                    <td class="cell-label-orange" style="width: 15%;">Signature</td>
+                    <td class="sig-val-editable" id="sig_qse_box" contenteditable="true"></td>
+                </tr>
+            </table>
+
+            <div class="sgs-reminder-v1">
+                Pour tout évènement en lien avec la sécurité des vols, veillez à envoyer une copie du présent formulaire au responsable SGS à l'adresse: <strong>bureau.sgs@alyzia.com</strong>
+            </div>
+
+            <footer class="legal-footer-fixed">
+                <table class="legal-table">
+                    <tr class="notice-row">
+                        <td class="legal-notice">
+                            Le présent document est la propriété du Groupe 3S. Il ne peut être reproduit, communiqué, ou confié à des personnes externes, sans l’autorisation du service QSE. 
+                        </td>
+                        <td class="legal-refs"><strong>QSE-FO-185 V01</strong><br>Date: 15/05/2018<br>Page 2 sur 2</td>
+                    </tr>
+                </table>
+            </footer>
+        </section>
+
+<div class="action-buttons no-print">
+    <button onclick="window.print()" class="btn-print">IMPRIMER PDF</button>
+    
+    <button onclick="genererPDF()" class="btn-pdf">GÉNÉRER PDF</button>
+    
+    <button onclick="envoyerEmail()" class="btn-mail">ENVOYER EMAIL</button>
+</div>
+    </div>
+</body>
+</html>

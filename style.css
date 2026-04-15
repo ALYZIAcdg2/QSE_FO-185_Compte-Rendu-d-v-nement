@@ -1,0 +1,240 @@
+/* POLICE ET BASE */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #525659;
+    margin: 0; padding: 20px 0;
+    font-size: 8.5pt;
+}
+
+.container { width: 210mm; margin: auto; }
+
+.pdf-page {
+    width: 210mm;
+    height: 297mm;
+    padding: 10mm;
+    margin-bottom: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER Alyzia */
+.header-main { 
+    display: flex; 
+    border: 1pt solid black; 
+    width: 100%; 
+    margin-bottom: 10pt; 
+    height: 85px;
+}
+.logo-box { 
+    width: 30%; 
+    border-right: 1pt solid black; 
+    padding: 5px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+.logo-box img { max-height: 90%; max-width: 90%; object-fit: contain; }
+.title-box { width: 70%; text-align: center; display: flex; flex-direction: column; }
+
+.type-doc { 
+    font-weight: bold; 
+    font-size: 11pt; 
+    color: #f39200; 
+    border-bottom: 1pt solid black; 
+    flex: 1; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+.nom-doc { font-weight: bold; font-size: 10pt; font-style: italic; flex: 1; display: flex; align-items: center; justify-content: center; }
+
+/* TABLES */
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    table-layout: fixed; 
+    margin-bottom: 8pt; 
+}
+.cell-label-orange { background-color: #f39200; color: white; font-weight: bold; border: 1pt solid black; padding: 4px; text-align: center; }
+.cell-input { border: 1pt solid black; background-color: white; }
+.cell-input input { width: 100%; border: none; padding: 4px; font-weight: bold; box-sizing: border-box; outline: none; }
+
+/* TABLEAU VOLS */
+.flight-data-main { border: 1pt solid black; border-top: none; }
+.flight-data-main thead td { border: 1pt solid black; height: 26px; text-align: center; background-color: #f39200; color: white; font-weight: bold; font-size: 7.5pt; }
+.flight-data-main tbody td { border: 1pt solid black; height: 32px; padding: 0; }
+.flight-data-main input { width: 100%; height: 100%; border: none; outline: none; padding: 5px; box-sizing: border-box; text-align: center; display: block; }
+
+/* FOOTER */
+.legal-footer-fixed { margin-top: auto; border: 1pt solid black; width: 100%; border-collapse: collapse; }
+.legal-table { margin-bottom: 0; border-collapse: collapse; width: 100%; }
+.legal-table td { border: 1pt solid black; }
+.validation-row td { height: 22px; padding: 0 8px; font-style: italic; font-size: 7.5pt; text-align: left; }
+.val-ref { text-align: center !important; font-weight: bold; width: 85px; font-style: normal !important; }
+.notice-row td { border-top: 1pt solid black; }
+.legal-notice { padding: 6px; font-size: 6.5pt; font-style: italic; line-height: 1.2; text-align: justify; border-right: 1pt solid black !important; }
+.legal-refs { padding: 5px !important; font-size: 7.5pt; text-align: right; width: 110px; font-weight: bold; }
+
+/* BOUTONS D'ACTION (NOUVEAU) */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.btn-pdf, .btn-mail {
+    padding: 12px 25px;
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-pdf { background-color: #27ae60; } /* Vert exact photo */
+.btn-mail { background-color: #0056b3; } /* Bleu exact photo */
+
+.btn-pdf:hover { background-color: #219150; }
+.btn-mail:hover { background-color: #004494; }
+
+/* CACHER À L'IMPRESSION */
+@media print {
+    .no-print { display: none !important; }
+    body { background-color: white; padding: 0; }
+    .pdf-page { box-shadow: none; margin-bottom: 0; page-break-after: always; }
+}
+
+/* AUTRES STYLES EXISTANTS */
+.impact-grid-v2 td { border: 1pt solid black; height: 26px; }
+.cell-check { width: 30px; text-align: center; }
+.cell-spacer { border: none !important; width: 40px; }
+.block-header-orange { background-color: #f39200; color: white; font-weight: bold; padding: 6px; border: 1pt solid black; border-bottom: none; }
+textarea { width: 100%; border: 1pt solid black; padding: 8px; font-family: Arial; font-size: 9pt; resize: none; box-sizing: border-box; margin-bottom: 8pt; display: block; outline: none; }
+.desc-large { height: 180px; }
+.encadre-large { height: 75px; }
+.desc-page2-v3 { height: 330px; border-top: 1pt solid black !important; }
+.qse-container { display: flex; gap: 12px; margin-top: 15pt; }
+.qse-frame-box { flex: 1; border: 1pt solid black; position: relative; padding: 18px 10px 10px 10px; background: white; }
+.frame-label-black { position: absolute; top: -9pt; left: 10px; background: white; padding: 0 5px; font-weight: bold; font-size: 8.5pt; }
+.diffusion-container-v2, .diffusion-container-v2-p2 { margin: 12pt 0; border: 1pt solid black; position: relative; padding: 18px 10px 10px 10px; }
+.diff-label-v2, .diff-label-p2 { position: absolute; top: -9pt; left: 10px; background: white; padding: 0 5px; font-weight: bold; text-decoration: underline; }
+.diff-content-v2 { display: flex; gap: 20px; font-weight: bold; font-size: 8pt; }
+.sig-table-main td { border: 1pt solid black; height: 35px; }
+.sig-val-editable { background-color: white; padding: 0; border: 1pt solid black; }
+.sig-val-editable input { width: 100%; height: 100%; border: none; outline: none; padding: 5px; font-weight: bold; box-sizing: border-box; }
+.sgs-reminder-v1 { text-align: center; font-size: 8pt; padding: 8pt; border: 1pt dashed black; margin: 10pt 0; }
+.uppercase-bold-center {
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Style pour les champs de date et heure pour qu'ils soient propres */
+input[type="date"], input[type="time"] {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    border: none;
+    width: 100%;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+/* CONFIGURATION DU FORMAT A4 */
+@page {
+    size: A4;
+    margin: 0; /* On gère les marges via le padding des sections */
+}
+
+.pdf-page {
+    width: 210mm;
+    height: 297mm;
+    padding: 10mm;
+    margin: 20px auto; /* Visible à l'écran, disparaît à l'impression */
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    page-break-after: always; /* Force chaque section sur une nouvelle feuille */
+}
+
+/* AJUSTEMENT POUR L'IMPRESSION PDF */
+@media print {
+    body {
+        background: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        width: 100%;
+    }
+
+    .pdf-page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        /* Évite que le navigateur ajoute des marges blanches indésirables */
+        -webkit-print-color-adjust: exact; 
+        print-color-adjust: exact;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Empêcher les coupures de tableaux à cheval sur deux pages */
+table, tr, td {
+    page-break-inside: avoid;
+}
+
+/* DESIGN DES BOUTONS D'ACTION */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.btn-print, .btn-pdf, .btn-mail {
+    padding: 12px 20px;
+    font-size: 10pt;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+}
+
+/* Bouton Imprimer (Système) */
+.btn-print { background-color: #7f8c8d; } /* Gris moderne */
+
+/* Bouton Générer (Serveur Python) */
+.btn-pdf { background-color: #27ae60; } /* Vert Alyzia/QSE */
+
+/* Bouton Email */
+.btn-mail { background-color: #2980b9; } /* Bleu */
+
+.btn-print:hover, .btn-pdf:hover, .btn-mail:hover {
+    opacity: 0.8;
+}
+
+/* CACHER LES BOUTONS SUR LE RÉSULTAT FINAL */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
