@@ -61,7 +61,7 @@ async function genererPDF() {
 async function envoyerEmail() {
     calculerScore();
     const data = getFormData();
-    showAlert("📤 Envoi direct au Bureau SGS...");
+    showAlert("📤 Email envoyé avec succès");
     try {
         const response = await fetch('/submit?action=email', {
             method: 'POST',
