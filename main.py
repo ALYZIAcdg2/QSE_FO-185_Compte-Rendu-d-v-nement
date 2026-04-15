@@ -73,35 +73,77 @@ async def envoyer_email_sendgrid(fichier_path, data):
         return r.status_code < 400
 
 async def generer_pdf_cre(data: CompteRendu):
-    fichier = f"CRE ALYZIA_{data.escale}.pdf"
+    fichier = f"CRE_{data.escale}.pdf"
+    # On force la langue française pour le format de date et d'heure
     browser = await launch(args=['--no-sandbox', '--lang=fr-FR'])
     try:
         page = await browser.newPage()
         await page.setExtraHTTPHeaders({'Accept-Language': 'fr-FR'})
-        await page.goto('http://localhost:10000', {'waitUntil': 'networkidle0'})
-        await page.evaluate(f"window.d = {data.model_dump_json()};")
-        # Script d'injection complet
-        await page.evaluate("""() => {
-            const d = window.d;
-            const setV = (id, v) => { if(document.getElementById(id)) document.getElementById(id).value = v; };
-            const setC = (id, v) => { if(document.getElementById(id)) document.getElementById(id).checked = v; };
-            const setT = (id, v) => { if(document.getElementById(id)) document.getElementById(id).innerText = v; };
-            setV('date_cr', d.date_cr); setV('entite', d.entite); setV('escale', d.escale);
-            setV('compagnie', d.compagnie); setV('num_vol', d.num_vol); setV('immat', d.immat);
-            setV('date_evenement', d.date_evenement); setV('heure_locale', d.heure_locale); setV('lieu', d.lieu);
-            setV('jour_nuit', d.jour_nuit); setV('meteo', d.meteo);
-            setV('desc_succincte', d.desc_succincte); setV('desc_detaillee', d.desc_detaillee);
-            setV('sig_redacteur_nom', d.sig_redacteur_nom); setT('sig_redacteur_box', d.sig_redacteur_box);
+        
+        # Charger la page
+        await page.goto('http://localhost:10000', {'waitUntil': 'networkidle0', 'timeout': 60000})
+        
+        # 🔥 ÉTAPE CRUCIALE : Injecter les données dans la page
+        # On transforme l'objet Python en JSON pour le JavaScript
+        data_json = data.model_dump_json()
+        
+        await page.evaluate(f"""(d_str) => {{
+            const d = JSON.parse(d_str);
+            const setV = (id, v) => {{ 
+                const el = document.getElementById(id);
+                if(el) {{ el.value = v; el.dispatchEvent(new Event('input')); }} 
+            }};
+            const setC = (id, v) => {{ 
+                const el = document.getElementById(id);
+                if(el) {{ el.checked = v; el.dispatchEvent(new Event('change')); }} 
+            }};
+            const setT = (id, v) => {{ 
+                const el = document.getElementById(id);
+                if(el) {{ el.innerText = v; }} 
+            }};
+
+            // Remplissage des champs
+            setV('date_cr', d.date_cr);
+            setV('entite', d.entite);
+            setV('escale', d.escale);
+            setV('compagnie', d.compagnie);
+            setV('num_vol', d.num_vol);
+            setV('immat', d.immat);
+            setV('date_evenement', d.date_evenement);
+            setV('heure_locale', d.heure_locale);
+            setV('lieu', d.lieu);
+            setV('jour_nuit', d.jour_nuit);
+            setV('meteo', d.meteo);
+            setV('desc_succincte', d.desc_succincte);
+            setV('desc_detaillee', d.desc_detaillee);
+            setV('sig_redacteur_nom', d.sig_redacteur_nom);
+            setT('sig_redacteur_box', d.sig_redacteur_box);
+            
+            // Checkboxes
+            setC('retard', d.retard);
+            setC('reclam_cie', d.reclam_cie);
+            setC('impact_secu', d.impact_secu);
+            setC('dysfonc', d.dysfonc);
+            
+            // Partie Analyse
             setV('analyse_encadrement', d.analyse_encadrement);
-            setC('diff_qse', d.diff_qse); setC('diff_cie', d.diff_cie); setC('diff_aeroport', d.diff_aeroport);
-            setV('sig_encadre_nom', d.sig_encadre_nom); setT('sig_encadre_box', d.sig_encadre_box);
+            setV('sig_encadre_nom', d.sig_encadre_nom);
+            setT('sig_encadre_box', d.sig_encadre_box);
             setV('analyse_qse_text', d.analyse_qse_text);
-            setC('cl_ev', d.cl_ev); setC('cl_inc', d.cl_inc); setC('cl_inc_g', d.cl_inc_g); setC('cl_acc', d.cl_acc);
-            setC('st_clos_s', d.st_clos_s); setC('st_ouvert', d.st_ouvert); setC('st_clos_d', d.st_clos_d);
-            setC('dsac', d.dsac); setC('bea', d.bea); setC('nav_air', d.nav_air); setC('autre', d.autre);
-            setV('sig_qse_nom', d.sig_qse_nom); setT('sig_qse_box', d.sig_qse_box);
-        }""")
-        await page.pdf({'path': fichier, 'format': 'A4', 'printBackground': True})
+            setV('sig_qse_nom', d.sig_qse_nom);
+            setT('sig_qse_box', d.sig_qse_box);
+        }}""", data_json)
+
+        # Laisser un court instant pour que le rendu se fasse
+        import asyncio
+        await asyncio.sleep(1) 
+
+        await page.pdf({
+            'path': fichier,
+            'format': 'A4',
+            'printBackground': True,
+            'margin': {'top': '0px', 'right': '0px', 'bottom': '0px', 'left': '0px'}
+        })
     finally:
         await browser.close()
     return fichier
