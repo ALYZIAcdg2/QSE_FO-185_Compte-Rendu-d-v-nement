@@ -57,8 +57,24 @@ async function genererPDF() {
     } catch (e) { showAlert("❌ Erreur serveur"); }
 }
 
-function envoyerEmail() {
+async function envoyerEmail() {
+    calculerScore();
     const data = getFormData();
-    const sub = `CRE - ${data.escale}`;
-    window.location.href = `mailto:bureau.sgs@alyzia.com?subject=${sub}`;
+    showAlert("📤 Envoi silencieux via SendGrid...");
+
+    try {
+        const response = await fetch('/submit?action=email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            showAlert("✅ Email envoyé avec succès");
+        } else {
+            showAlert("❌ Erreur lors de l'envoi SendGrid.");
+        }
+    } catch (error) {
+        showAlert("❌ Impossible de joindre le serveur.");
+    }
 }
